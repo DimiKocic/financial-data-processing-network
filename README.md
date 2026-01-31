@@ -25,18 +25,27 @@ Stock Exchanges → Kafka (StockExchange topic) → Investors → Kafka (portfol
 ---
 
 ## Repository Structure
-
 .
 ├── se1_server.py        # Stock Exchange Server 1 (first 12 stocks)
+
 ├── se2_server.py        # Stock Exchange Server 2 (remaining stocks)
+
 ├── inv1.py              # Investor 1 (P11, P12)
+
 ├── inv2.py              # Investor 2 (P21, P22)
+
 ├── inv3.py              # Investor 3 (P31, P32)
+
 ├── investorsDB.py       # MySQL database initialization
+
 ├── app1.py              # Kafka → MySQL ingestion (portfolio results)
+
 ├── app2.py              # Spark analytics + statistics generation
+
 ├── Inv1_P11_stats.json  # Example Spark output
+
 ├── Inv1_P12_stats.json  # Example Spark output
+
 └── README.md
 
 
