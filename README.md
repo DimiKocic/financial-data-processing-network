@@ -137,7 +137,7 @@ Trading days exclude weekends and holidays, with a 2-second delay per simulated 
 
 ---
 
-### Start Kafka
+### Step 1 - Start Kafka
 
 Start Zookeeper and Kafka, then create topics:
 
@@ -146,14 +146,6 @@ kafka-topics.sh --create --topic StockExchange --bootstrap-server localhost:9092
 kafka-topics.sh --create --topic portfolios --bootstrap-server localhost:9092
 
 ```
-
-## How to Run the System (6 Steps)
-## Step 1 – Start Kafka and Create Topics
-
-Make sure Zookeeper and Kafka are running, then create the required topics:
-
-kafka-topics.sh --create --topic StockExchange --bootstrap-server localhost:9092
-kafka-topics.sh --create --topic portfolios --bootstrap-server localhost:9092
 
 ## Step 2 – Initialize the MySQL Database
 
