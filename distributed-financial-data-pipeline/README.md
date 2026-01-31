@@ -1,10 +1,10 @@
 # Kafka Stock Exchange Simulation — Setup & Execution Guide
 
-## 1. Start Required Services
+# 1. Start Required Services
 
 Open a terminal window and run the following commands.
 
-### 1.1 Start Zookeeper
+## 1.1 Start Zookeeper
 
 Zookeeper is required for managing Kafka brokers:
 
@@ -12,14 +12,14 @@ Zookeeper is required for managing Kafka brokers:
 sudo systemctl start zookeeper
 ```
 
-1.2 Start Kafka
+## 1.2 Start Kafka
 Once Zookeeper is running, start Kafka:
 
 ```bash
 sudo systemctl start kafka
 ```
 
-# 1.3 Create Kafka Topic for Stock Data
+## 1.3 Create Kafka Topic for Stock Data
 Create the StockExchange topic:
 
 kafka-topics.sh \
@@ -29,7 +29,7 @@ kafka-topics.sh \
   --partitions 1 \
   --topic StockExchange
 
-# 1.4 Create Kafka Topic for Portfolio Evaluations
+## 1.4 Create Kafka Topic for Portfolio Evaluations
 Create the portfolios topic:
 
 kafka-topics.sh \
@@ -39,7 +39,7 @@ kafka-topics.sh \
   --partitions 1 \
   --topic portfolios
 
-## 2. Run the Python Scripts
+# 2. Run the Python Scripts
 After Kafka and Zookeeper are running, open seven terminal tabs/windows.
 
 In each tab, navigate to the directory containing the Python scripts:
@@ -86,12 +86,12 @@ Monitors and processes stock data and portfolio evaluations:
 python3 app1.py
 ```
 
-## 3. Wait for Data Transfer
+# 3. Wait for Data Transfer
 Allow sufficient time for all portfolio evaluation results to be processed and written to the database.
 
 This duration depends on data volume and system performance.
 
-4. Generate Reports
+# 4. Generate Reports
 Once data transfer is complete, open an 8th terminal window and run:
 
 python3 app2.py
@@ -103,7 +103,7 @@ Inv1_P12_stats.json
 
 These files are saved in the same directory as the Python scripts.
 
-5. Generating Reports for Other Investors
+# 5. Generating Reports for Other Investors
 To generate reports for different investors:
 
 Open app2.py
@@ -119,6 +119,7 @@ Change the investor ID to one of the following:
 3 → Investor 3
 
 Save the file and rerun:
-
+```bash
 python3 app2.py
+```
 
