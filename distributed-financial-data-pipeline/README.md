@@ -21,7 +21,7 @@ sudo systemctl start kafka
 
 ## 1.3 Create Kafka Topic for Stock Data
 
-Create the StockExchange topic:
+- Create the StockExchange topic:
 ```bash
 kafka-topics.sh \
   --create \
@@ -32,7 +32,8 @@ kafka-topics.sh \
 ```
 
 ## 1.4 Create Kafka Topic for Portfolio Evaluations
-Create the portfolios topic:
+
+- Create the portfolios topic:
 
 ```bash
 kafka-topics.sh \
@@ -44,14 +45,15 @@ kafka-topics.sh \
 ```
 
 # 2. Run the Python Scripts
-After Kafka and Zookeeper are running, open seven terminal tabs/windows.
 
-In each tab, navigate to the directory containing the Python scripts:
+- After Kafka and Zookeeper are running, open seven terminal tabs/windows.
+- In each tab, navigate to the directory containing the Python scripts:
 
 ```bash
 cd /path/to/your/scripts
 ```
-Then run the following:
+
+- Then run the following:
 
 Tab 1 — Stock Exchange Server 1
 ```bash
@@ -80,13 +82,13 @@ python3 inv3.py
 ```
 
 Tab 6 — Database Insertion Service
-Stores portfolio evaluation results in the database:
+- Stores portfolio evaluation results in the database:
 ```bash
 python investorsDB.py
 ```
 
 Tab 7 — Main Processing Application
-Monitors and processes stock data and portfolio evaluations:
+- Monitors and processes stock data and portfolio evaluations:
 
 ```bash
 python3 app1.py
@@ -105,7 +107,7 @@ python3 app2.py
   Inv1_P11_stats.json
   Inv1_P12_stats.json
 
-These files are saved in the same directory as the Python scripts.
+- These files are saved in the same directory as the Python scripts.
 
 # 5. Generating Reports for Other Investors
 
@@ -114,7 +116,7 @@ These files are saved in the same directory as the Python scripts.
 Open app2.py
 Locate line 122
 
-Change the investor ID to one of the following:
+- Change the investor ID to one of the following:
 
 1 → Investor 1
 
@@ -122,9 +124,10 @@ Change the investor ID to one of the following:
 
 3 → Investor 3
 
-Save the file and rerun:
+- Save the file and rerun:
 ```bash
 python3 app2.py
 ```
+
 
 
