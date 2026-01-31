@@ -2,11 +2,11 @@
 
 # 1. Start Required Services
 
-Open a terminal window and run the following commands.
+- Open a terminal window and run the following commands.
 
 ## 1.1 Start Zookeeper
 
-Zookeeper is required for managing Kafka brokers:
+- Zookeeper is required for managing Kafka brokers:
 
 ```bash
 sudo systemctl start zookeeper
@@ -20,31 +20,37 @@ sudo systemctl start kafka
 ```
 
 ## 1.3 Create Kafka Topic for Stock Data
-Create the StockExchange topic:
 
+Create the StockExchange topic:
+```bash
 kafka-topics.sh \
   --create \
   --bootstrap-server localhost:9092 \
   --replication-factor 1 \
   --partitions 1 \
   --topic StockExchange
+```
 
 ## 1.4 Create Kafka Topic for Portfolio Evaluations
 Create the portfolios topic:
 
+```bash
 kafka-topics.sh \
   --create \
   --bootstrap-server localhost:9092 \
   --replication-factor 1 \
   --partitions 1 \
   --topic portfolios
+```
 
 # 2. Run the Python Scripts
 After Kafka and Zookeeper are running, open seven terminal tabs/windows.
 
 In each tab, navigate to the directory containing the Python scripts:
 
+```bash
 cd /path/to/your/scripts
+```
 Then run the following:
 
 Tab 1 — Stock Exchange Server 1
@@ -87,27 +93,25 @@ python3 app1.py
 ```
 
 # 3. Wait for Data Transfer
-Allow sufficient time for all portfolio evaluation results to be processed and written to the database.
-
-This duration depends on data volume and system performance.
+- Allow sufficient time for all portfolio evaluation results to be processed and written to the database.
+- This duration depends on data volume and system performance.
 
 # 4. Generate Reports
-Once data transfer is complete, open an 8th terminal window and run:
-
+-Once data transfer is complete, open an 8th terminal window and run:
+```bash
 python3 app2.py
-This generates two JSON files for Investor 1:
-
-Inv1_P11_stats.json
-
-Inv1_P12_stats.json
+```
+- This generates two JSON files for Investor 1:
+  Inv1_P11_stats.json
+  Inv1_P12_stats.json
 
 These files are saved in the same directory as the Python scripts.
 
 # 5. Generating Reports for Other Investors
-To generate reports for different investors:
+
+- To generate reports for different investors:
 
 Open app2.py
-
 Locate line 122
 
 Change the investor ID to one of the following:
@@ -122,4 +126,5 @@ Save the file and rerun:
 ```bash
 python3 app2.py
 ```
+
 
