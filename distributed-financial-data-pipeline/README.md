@@ -13,7 +13,7 @@ sudo systemctl start zookeeper
 ```
 
 ## 1.2 Start Kafka
-Once Zookeeper is running, start Kafka:
+- Once Zookeeper is running, start Kafka:
 
 ```bash
 sudo systemctl start kafka
@@ -128,6 +128,7 @@ Locate line 122
 ```bash
 python3 app2.py
 ```
+
 
 
 
