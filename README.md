@@ -127,3 +127,73 @@ financial-data-processing-network/
 ├── Inv1_P11_stats.json  # Example analytics output
 ├── Inv1_P12_stats.json
 └── README.md
+```
+
+## How to Run
+
+The system runs as a coordinated set of services. Each component depends on the previous one, so follow the steps below in order.
+
+---
+
+### Step 1 – Kafka Infrastructure Setup
+
+Start Zookeeper and Kafka locally, then create two topics:
+
+- `StockExchange` – receives market data from stock exchanges  
+- `portfolios` – receives evaluated portfolio results from investors  
+
+```bash
+kafka-topics.sh --create --topic StockExchange --bootstrap-server localhost:9092
+kafka-topics.sh --create --topic portfolios --bootstrap-server localhost:9092
+```
+
+## Step 2 – Initialize the Database
+
+- Run the database initialization script to create InvestorsDB, all schema tables, investor–portfolio mappings, and individual portfolio tables:
+  
+```bash
+python investorsDB.py
+```
+
+This prepares the persistent storage layer.
+
+## Step 3 – Start Portfolio Persistence Service
+
+- Launch the Kafka consumer that listens to portfolio evaluations and inserts them into MySQL:
+
+```bash
+python app1.py
+```
+
+Leave this service running.
+
+## Step 4 – Start Institutional Investors
+
+Run each investor in a separate terminal. These services consume stock prices and publish portfolio valuations:
+
+```bash
+python inv1.py
+python inv2.py
+python inv3.py
+```
+
+## Step 5 – Start Stock Exchange Simulators
+
+Run both stock exchange servers in separate terminals. These simulate historical trading and stream daily stock prices:
+
+```bash
+python se1_server.py
+python se2_server.py
+```
+
+At this point, data begins flowing through the full pipeline.
+
+## Step 6 – Run Spark Analytics
+
+After portfolio data has accumulated in MySQL, execute the Spark analytics job to generate historical statistics:
+
+```bash
+spark-submit app2.py
+```
+
+This produces JSON output files such as Inv1_P11_stats.json and Inv1_P12_stats.json containing portfolio analytics.
