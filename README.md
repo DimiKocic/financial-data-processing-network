@@ -126,7 +126,7 @@ Trading days exclude weekends and holidays, with a 2-second delay per simulated 
 
 ---
 
-### Step 1 – Start Kafka
+### Start Kafka
 
 Start Zookeeper and Kafka, then create topics:
 
@@ -136,21 +136,21 @@ kafka-topics.sh --create --topic portfolios --bootstrap-server localhost:9092
 
 ```
 
-How to Run the System (6 Steps)
-Step 1 – Start Kafka and Create Topics
+## How to Run the System (6 Steps)
+## Step 1 – Start Kafka and Create Topics
 
 Make sure Zookeeper and Kafka are running, then create the required topics:
 
 kafka-topics.sh --create --topic StockExchange --bootstrap-server localhost:9092
 kafka-topics.sh --create --topic portfolios --bootstrap-server localhost:9092
 
-Step 2 – Initialize the MySQL Database
+## Step 2 – Initialize the MySQL Database
 
 This creates InvestorsDB, all core tables, and the per-portfolio tables:
 
 python investorsDB.py
 
-Step 3 – Start Portfolio Ingestion (Kafka → MySQL)
+## Step 3 – Start Portfolio Ingestion (Kafka → MySQL)
 
 This service listens to the portfolios topic and continuously writes results into MySQL:
 
@@ -159,7 +159,7 @@ python app1.py
 
 Leave this running.
 
-Step 4 – Start the Institutional Investors
+## Step 4 – Start the Institutional Investors
 
 Each investor consumes stock prices and publishes portfolio evaluations.
 
@@ -169,7 +169,7 @@ python inv1.py
 python inv2.py
 python inv3.py
 
-Step 5 – Start the Stock Exchange Servers
+## Step 5 – Start the Stock Exchange Servers
 
 These simulate historical trading and publish stock prices to Kafka.
 
@@ -181,7 +181,7 @@ python se2_server.py
 
 At this point, data starts flowing through the full pipeline.
 
-Step 6 – Run Spark Analytics
+## Step 6 – Run Spark Analytics
 
 After portfolio data has accumulated in MySQL, generate historical statistics:
 
