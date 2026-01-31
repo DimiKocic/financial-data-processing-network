@@ -99,7 +99,7 @@ python3 app1.py
 - This duration depends on data volume and system performance.
 
 # 4. Generate Reports
--Once data transfer is complete, open an 8th terminal window and run:
+- Once data transfer is complete, open an 8th terminal window and run:
 ```bash
 python3 app2.py
 ```
@@ -128,6 +128,7 @@ Locate line 122
 ```bash
 python3 app2.py
 ```
+
 
 
 
