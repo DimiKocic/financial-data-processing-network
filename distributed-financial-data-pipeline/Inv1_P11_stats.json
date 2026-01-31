@@ -1,0 +1,5 @@
+{
+"MaxMinDailyChange": [{"min_daily_change":-173244.0,"max_daily_change":2867208.0,"min_daily_change_pct":-6.1,"max_daily_change_pct":6.46}],
+"MaxMinDailyChangePerYear": [{"year":2004,"min_daily_change":-171077.0,"max_daily_change":153210.0,"min_daily_change_pct":-5.96,"max_daily_change_pct":5.7},{"year":2003,"min_daily_change":-147576.0,"max_daily_change":163859.0,"min_daily_change_pct":-5.18,"max_daily_change_pct":6.11},{"year":2002,"min_daily_change":-173244.0,"max_daily_change":172286.0,"min_daily_change_pct":-6.1,"max_daily_change_pct":6.45},{"year":2001,"min_daily_change":-161222.0,"max_daily_change":171833.0,"min_daily_change_pct":-5.67,"max_daily_change_pct":6.4},{"year":2000,"min_daily_change":-160966.0,"max_daily_change":2867208.0,"min_daily_change_pct":-5.64,"max_daily_change_pct":6.46}],
+"AvgStdDevEvaluation": [{"avg_evaluation":2762423.2400000002,"stddev_evaluation":46343.55}]
+}
