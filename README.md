@@ -1,194 +1,129 @@
 # Distributed Financial Data Processing Network (Kafka + Spark + MySQL)
 
-End-to-end data engineering project simulating stock exchanges and institutional investors using Apache Kafka, MySQL, and Apache Spark.
+End-to-end data engineering system simulating stock exchanges and institutional investors using Apache Kafka, MySQL, and Apache Spark.
 
-The system streams daily stock prices, evaluates multiple investor portfolios in real time, persists results in a relational database, and performs historical analytics using Spark.
+The project demonstrates a full streaming analytics workflow:
 
-This project demonstrates practical streaming architectures, distributed processing, and analytics pipelines.
+- real-time market data ingestion  
+- distributed portfolio evaluation  
+- persistent storage in relational databases  
+- historical analytics using Spark  
 
----
-
-## Architecture Overview
-
-Pipeline:
-
-Stock Exchanges → Kafka (StockExchange topic) → Investors → Kafka (portfolios topic) → MySQL → Spark Analytics
-
-### Components
-
-1. Two Stock Exchange servers generate daily stock prices and publish them to Kafka.
-2. Three Institutional Investors consume stock prices, evaluate portfolios, and publish portfolio valuations.
-3. A database application initializes MySQL and creates investor/portfolio tables.
-4. A Kafka consumer ingests portfolio evaluations into MySQL.
-5. A Spark application reads MySQL tables and generates portfolio statistics.
+It models realistic financial data pipelines and multi-service architectures.
 
 ---
 
-## Repository Structure
-.
-├── se1_server.py        # Stock Exchange Server 1 (first 12 stocks)
+## Problem Statement
 
-├── se2_server.py        # Stock Exchange Server 2 (remaining stocks)
+Financial systems require continuous ingestion of market data, near–real-time portfolio evaluation, and historical analytics.
 
+This project simulates such an environment by building a distributed network of:
+
+- stock exchanges  
+- institutional investors  
+- streaming infrastructure  
+- persistent databases  
+- analytics engines  
+
+The goal is to demonstrate how raw market events flow through Kafka, are processed by multiple consumers, stored in MySQL, and analyzed with Spark.
+
+---
+
+## System Overview
+
+The pipeline operates as:
+
+Stock Exchanges → Kafka (`StockExchange`) → Investors → Kafka (`portfolios`) → MySQL → Spark Analytics
+
+---
+
+### 1. Stock Exchange Simulation (`se1_server.py`, `se2_server.py`)
+
+Two independent stock exchange servers simulate historical trading starting from January 1, 2000.
+
+Features:
+
+- emit daily closing prices for multiple stocks  
+- skip weekends and holidays  
+- simulate passage of time (2-second delay per trading day)  
+- publish JSON messages to Kafka topic `StockExchange`  
+
+These services act as the data producers driving the system.
+
+---
+
+### 2. Institutional Investors (`inv1.py`, `inv2.py`, `inv3.py`)
+
+Three investor services consume market data and evaluate portfolios in real time.
+
+Each investor:
+
+- manages two portfolios  
+- waits until all required stock prices for a given day are received  
+- computes:
+  - portfolio value  
+  - daily change  
+  - percentage change  
+- publishes results to Kafka topic `portfolios`  
+
+This layer represents distributed business logic operating on streaming data.
+
+---
+
+### 3. Database Initialization (`investorsDB.py`)
+
+Initializes the persistent storage layer by:
+
+- creating MySQL database `InvestorsDB`  
+- creating Investors and Portfolios tables  
+- establishing investor–portfolio mappings  
+- generating individual tables per portfolio (e.g., `Inv1_P11`)  
+
+This prepares the schema for downstream ingestion and analytics.
+
+---
+
+### 4. Portfolio Persistence (`app1.py`)
+
+Consumes portfolio evaluations from Kafka and inserts them into MySQL.
+
+Responsibilities:
+
+- listens to topic `portfolios`  
+- routes each record to the appropriate portfolio table  
+- continuously persists streaming results  
+
+This component bridges streaming data with relational storage.
+
+---
+
+### 5. Spark Analytics (`app2.py`)
+
+Reads portfolio tables from MySQL and generates historical statistics.
+
+Computed metrics include:
+
+- global max/min daily changes  
+- yearly max/min changes  
+- average portfolio values  
+- standard deviation of evaluations  
+
+Results are exported as JSON files (e.g., `Inv1_P11_stats.json`) for inspection.
+
+---
+
+## Project Structure
+
+```text
+financial-data-processing-network/
+├── se1_server.py        # Stock Exchange Server 1
+├── se2_server.py        # Stock Exchange Server 2
 ├── inv1.py              # Investor 1 (P11, P12)
-
 ├── inv2.py              # Investor 2 (P21, P22)
-
 ├── inv3.py              # Investor 3 (P31, P32)
-
-├── investorsDB.py       # MySQL database initialization
-
-├── app1.py              # Kafka → MySQL ingestion (portfolio results)
-
-├── app2.py              # Spark analytics + statistics generation
-
-├── Inv1_P11_stats.json  # Example Spark output
-
-├── Inv1_P12_stats.json  # Example Spark output
-
+├── investorsDB.py       # MySQL schema initialization
+├── app1.py              # Kafka → MySQL ingestion
+├── app2.py              # Spark analytics
+├── Inv1_P11_stats.json  # Example analytics output
+├── Inv1_P12_stats.json
 └── README.md
-
-
-
----
-
-## Technologies Used
-
-- Apache Kafka – real-time streaming
-- Apache Spark – distributed analytics
-- MySQL – persistent storage
-- Python – orchestration and processing
-
----
-
-## What the System Does
-
-### Stock Exchanges
-
-`se1_server.py` and `se2_server.py` simulate daily trading starting from January 1, 2000.  
-Each trading day emits JSON messages to Kafka topic `StockExchange` with:
-
-- Ticker symbol
-- Closing price
-- Date
-
-Trading days exclude weekends and holidays, with a 2-second delay per simulated day.
-
----
-
-### Institutional Investors
-
-`inv1.py`, `inv2.py`, and `inv3.py`:
-
-- Consume stock prices from Kafka
-- Maintain two portfolios per investor
-- Evaluate portfolios once all required stock prices for a day are received
-- Compute:
-  - Portfolio value
-  - Daily change
-  - Percentage change
-- Publish results to Kafka topic `portfolios`
-
----
-
-### Database Initialization
-
-`investorsDB.py`:
-
-- Creates MySQL database `InvestorsDB`
-- Creates Investors, Portfolios, and mapping tables
-- Creates per-portfolio tables (e.g., Inv1_P11, Inv2_P22)
-- Initializes investors and portfolio relationships
-
----
-
-### Portfolio Persistence
-
-`app1.py`:
-
-- Consumes from Kafka topic `portfolios`
-- Inserts portfolio evaluations into corresponding MySQL tables
-
----
-
-### Spark Analytics
-
-`app2.py`:
-
-- Reads portfolio tables from MySQL
-- Computes:
-  - Global max/min daily change and percentage
-  - Yearly max/min statistics
-  - Average portfolio value
-  - Standard deviation of portfolio value
-- Outputs results to JSON files such as `Inv1_P11_stats.json`
-
----
-
-## How to Run
-
-### Prerequisites
-
-- Python 3.8+
-- Apache Kafka (running on localhost:9092)
-- Apache Spark
-- MySQL Server
-- MySQL Connector JAR for Spark
-
----
-
-### Step 1 - Start Kafka
-
-Start Zookeeper and Kafka, then create topics:
-
-```bash
-kafka-topics.sh --create --topic StockExchange --bootstrap-server localhost:9092
-kafka-topics.sh --create --topic portfolios --bootstrap-server localhost:9092
-
-```
-
-## Step 2 – Initialize the MySQL Database
-
-This creates InvestorsDB, all core tables, and the per-portfolio tables:
-
-python investorsDB.py
-
-## Step 3 – Start Portfolio Ingestion (Kafka → MySQL)
-
-This service listens to the portfolios topic and continuously writes results into MySQL:
-
-python app1.py
-
-
-Leave this running.
-
-## Step 4 – Start the Institutional Investors
-
-Each investor consumes stock prices and publishes portfolio evaluations.
-
-Run each in a separate terminal:
-
-python inv1.py
-python inv2.py
-python inv3.py
-
-## Step 5 – Start the Stock Exchange Servers
-
-These simulate historical trading and publish stock prices to Kafka.
-
-Run both in separate terminals:
-
-python se1_server.py
-python se2_server.py
-
-
-At this point, data starts flowing through the full pipeline.
-
-## Step 6 – Run Spark Analytics
-
-After portfolio data has accumulated in MySQL, generate historical statistics:
-
-spark-submit app2.py
-
-
-This produces JSON files such as Inv1_P11_stats.json and Inv1_P12_stats.json with portfolio analytics.
