@@ -19,7 +19,7 @@ Once Zookeeper is running, start Kafka:
 sudo systemctl start kafka
 ```
 
-1.3 Create Kafka Topic for Stock Data
+# 1.3 Create Kafka Topic for Stock Data
 Create the StockExchange topic:
 
 kafka-topics.sh \
@@ -29,7 +29,7 @@ kafka-topics.sh \
   --partitions 1 \
   --topic StockExchange
 
-1.4 Create Kafka Topic for Portfolio Evaluations
+# 1.4 Create Kafka Topic for Portfolio Evaluations
 Create the portfolios topic:
 
 kafka-topics.sh \
@@ -39,7 +39,7 @@ kafka-topics.sh \
   --partitions 1 \
   --topic portfolios
 
-2. Run the Python Scripts
+## 2. Run the Python Scripts
 After Kafka and Zookeeper are running, open seven terminal tabs/windows.
 
 In each tab, navigate to the directory containing the Python scripts:
@@ -48,24 +48,45 @@ cd /path/to/your/scripts
 Then run the following:
 
 Tab 1 — Stock Exchange Server 1
+```bash
 python3 se1_server.py
+```
+
 Tab 2 — Stock Exchange Server 2
+```bash
 python3 se2_server.py
+```
+
 Tab 3 — Investor 1 Evaluation
+```bash
 python3 inv1.py
+```
+
 Tab 4 — Investor 2 Evaluation
+
+```bash
 python3 inv2.py
+```
+
 Tab 5 — Investor 3 Evaluation
+```bash
 python3 inv3.py
+```
+
 Tab 6 — Database Insertion Service
 Stores portfolio evaluation results in the database:
-
+```bash
 python investorsDB.py
+```
+
 Tab 7 — Main Processing Application
 Monitors and processes stock data and portfolio evaluations:
 
+```bash
 python3 app1.py
-3. Wait for Data Transfer
+```
+
+## 3. Wait for Data Transfer
 Allow sufficient time for all portfolio evaluation results to be processed and written to the database.
 
 This duration depends on data volume and system performance.
@@ -100,3 +121,4 @@ Change the investor ID to one of the following:
 Save the file and rerun:
 
 python3 app2.py
+
